@@ -5,7 +5,7 @@ class TelaLogin:
     def __init__(self, on_login_callback=None):
         self.on_login_callback = on_login_callback
         
-        # Definindo as referências para os campos de entrada:
+        # Referências
         self.login_ref = ft.Ref[str]()
         self.senha_ref = ft.Ref[str]()
 
