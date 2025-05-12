@@ -7,20 +7,30 @@ class TelaCadastro:
         self.on_voltar_login = on_voltar_login
 
         # Referências
-        self.nome_ref = ft.Ref[str]()
-        self.cpf_ref = ft.Ref[str]()
-        self.tel_ref = ft.Ref[str]()
-        self.end_ref = ft.Ref[str]()
-        self.email_ref = ft.Ref[str]()
+        self.nome_ref       = ft.Ref[str]()
+        self.cpf_ref        = ft.Ref[str]()
+        self.tel_ref        = ft.Ref[str]()
+        self.end_ref        = ft.Ref[str]()
+        self.email_ref      = ft.Ref[str]()
         self.tipo_conta_ref = ft.Ref[str]()
 
         self.view = self.criar_view()
 
     def criar_view(self):
-        titulo = ft.Text("CADASTRO DE CONTA", size=24, weight=ft.FontWeight.BOLD)
+        #1
+        titulo = ft.Text(
+            "CADASTRO DE CONTA", 
+            size=24, 
+            weight=ft.FontWeight.BOLD
+        )
 
-        tipo_conta_texto = ft.Text("Qual tipo de conta deseja criar?", size=16)
+        #2
+        tipo_conta_texto = ft.Text(
+            "Qual tipo de conta deseja criar?", 
+            size=16
+        )
 
+        #3
         tipo_conta_grupo = ft.RadioGroup(
             content=ft.Row(
                 controls=[
@@ -32,27 +42,38 @@ class TelaCadastro:
             ref=self.tipo_conta_ref
         )
 
-        campos = ft.Column([
-            CampoComIcone("person", "Nome", ref_obj=self.nome_ref),
-            CampoComIcone("badge", "CPF", ref_obj=self.cpf_ref),
-            CampoComIcone("phone", "Telefone", ref_obj=self.tel_ref),
-            CampoComIcone("home", "Endereço", ref_obj=self.end_ref),
-            CampoComIcone("mail", "Email", ref_obj=self.email_ref),
-        ], spacing=10)
+        #4
+        campos = ft.Column(
+            [
+                CampoComIcone("person", "Nome", ref_obj=self.nome_ref),
+                CampoComIcone("badge", "CPF", ref_obj=self.cpf_ref),
+                CampoComIcone("phone", "Telefone", ref_obj=self.tel_ref),
+                CampoComIcone("home", "Endereço", ref_obj=self.end_ref),
+                CampoComIcone("mail", "Email", ref_obj=self.email_ref),
+            ], spacing=10
+        )
 
-        botao_cadastro = ft.ElevatedButton("Fazer cadastro", on_click=self.on_cadastrar_click)
+        #5
+        botao_cadastro = ft.ElevatedButton(
+            "Fazer cadastro", 
+            on_click=self.on_cadastrar_click
+        )
 
-        link_login = ft.TextButton("Já tem uma conta? Fazer login", on_click=self.on_voltar_login)
+        #6
+        link_login = ft.TextButton(
+            "Já tem uma conta? Fazer login", 
+            on_click=self.on_voltar_login
+        )
 
         return ft.Container(
             content=ft.Column(
                 controls=[
-                    titulo,
-                    tipo_conta_texto,
-                    tipo_conta_grupo,
-                    campos,
-                    botao_cadastro,
-                    link_login,
+                    titulo,            #1
+                    tipo_conta_texto,  #2
+                    tipo_conta_grupo,  #3
+                    campos,            #4
+                    botao_cadastro,    #5
+                    link_login,        #6
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
