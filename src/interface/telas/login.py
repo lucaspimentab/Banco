@@ -5,58 +5,58 @@ class TelaLogin:
     def __init__(self, on_login_callback=None, on_ir_cadastro=None):
         self.on_login_callback = on_login_callback
         self.on_ir_cadastro = on_ir_cadastro
-        
-        # Referências
-        self.login_ref = ft.Ref[str]()
+
+        self.cpf_ref = ft.Ref[str]()
         self.senha_ref = ft.Ref[str]()
+        self.snackbar = ft.SnackBar(ft.Text(""))
 
-        self.view = self.criar_view()
+    def criar_view(self, page):
+        msg = page.session.get("mensagem_sucesso")
+        if msg:
+            self.snackbar = ft.SnackBar(
+                content=ft.Text(msg),
+                bgcolor=ft.Colors.GREEN_600,
+                show_close_icon=True,
+                duration=3000
+            )
+            page.snack_bar = self.snackbar
+            self.snackbar.open = True
+            page.session.set("mensagem_sucesso", "")
+            page.update()
 
-    def criar_view(self):
+        titulo = ft.Text("Login", size=24, weight=ft.FontWeight.BOLD)
 
-        #1
-        titulo = ft.Text(
-            "Login", 
-            size=24, 
-            weight=ft.FontWeight.BOLD
+        cpf_row = CampoComIcone(
+            "badge",
+            "CPF",
+            ref_obj=self.cpf_ref,
+            hint_text="Digite seu CPF (somente números)"
         )
 
-        #2
-        login_row = CampoComIcone(
-            "person", 
-            "Usuário", 
-            ref_obj=self.login_ref
-        )
-
-        #3
-        password_row = CampoComIcone(
-            "lock", 
-            "Senha", 
-            senha=True, 
+        senha_row = CampoComIcone(
+            "lock",
+            "Senha",
+            senha=True,
             ref_obj=self.senha_ref
         )
-        
-        #4
-        login_button = ft.ElevatedButton(
-            "Entrar", 
-            on_click=self.on_login_click
-        )
-        
-        #5
+
+        login_button = ft.ElevatedButton("Entrar", on_click=self.on_login_click)
+
         register_link = ft.TextButton(
-            "Não tem uma conta? Cadastre-se", 
+            "Não tem uma conta? Cadastre-se",
             style=ft.ButtonStyle(color=ft.Colors.BLUE_500),
             on_click=self.on_ir_cadastro
         )
-        
+
         return ft.Container(
             content=ft.Column(
                 controls=[
-                    titulo,        #1
-                    login_row,     #2
-                    password_row,  #3
-                    login_button,  #4
-                    register_link, #5
+                    titulo,
+                    cpf_row,
+                    senha_row,
+                    login_button,
+                    register_link,
+                    self.snackbar
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -65,8 +65,25 @@ class TelaLogin:
             expand=True
         )
 
+    def mostrar_erro(self, page, mensagem):
+        self.snackbar.content.value = mensagem
+        self.snackbar.bgcolor = ft.Colors.RED_600
+        self.snackbar.open = True
+        page.snack_bar = self.snackbar
+        page.update()
+
     def on_login_click(self, e):
-        print("Usuário:", self.login_input.value)
-        print("Senha:", self.senha_input.value)
+        page = e.page
+        cpf = self.cpf_ref.current.value.strip()
+        senha = self.senha_ref.current.value.strip()
+
+        if not cpf or not cpf.isdigit() or len(cpf) != 11:
+            self.mostrar_erro(page, "CPF inválido. Digite exatamente 11 números.")
+            return
+
+        if not senha:
+            self.mostrar_erro(page, "Digite a senha.")
+            return
+
         if self.on_login_callback:
-            self.on_login_callback(self.login_input.value, self.senha_input.value)
+            self.on_login_callback(cpf, senha)
