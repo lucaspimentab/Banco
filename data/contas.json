@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "nome": "Lucas Pimenta Braga",
+    "cpf": "15711289640",
+    "email": "lucaspimenta@gmail.com",
+    "data_nascimento": "2004-05-25",
+    "endereco": "Rua Ingas, 375, Eldorado - Contagem/MG",
+    "telefone": "31996281600",
+    "data_cadastro": "2025-05-13 01:42:41",
+    "senha": "pimentabraga",
+    "contas": [
+      {
+        "numero": 1000,
+        "tipo": "Poupanca",
+        "saldo": 0.0
+      },
+      {
+        "numero": 1001,
+        "tipo": "Corrente",
+        "saldo": 0.0
+      }
+    ]
+  }
+]

@@ -2,12 +2,16 @@ import flet as ft
 
 class Tela:
     def __init__(self):
-        self.view = self.criar_view()
+        # Cria a view padrão ao instanciar a tela
+        self.view = ft.Container(expand=True, alignment=ft.alignment.center)
 
-    def criar_view(self):
-        # Pode ser um container genérico para as telas
-        return ft.Container(expand=True, alignment=ft.alignment.center)
+    def criar_view(self, page):
+        # Pode customizar a view conforme necessário
+        return self.view
 
     def add_componentes(self, components):
-        # Método para adicionar componentes específicos
-        self.view.content = ft.Column(controls=components, alignment=ft.MainAxisAlignment.CENTER)
+        # Adiciona componentes organizados verticalmente na view
+        self.view.content = ft.Column(
+            controls=components,
+            alignment=ft.MainAxisAlignment.CENTER
+        )
