@@ -26,23 +26,17 @@ def main(page: ft.Page):
 
     def login_realizado(cpf, senha):
         cliente = banco.buscar_cliente_por_cpf(cpf)
+
+        # Possíveis erros:
         if not cliente:
-            tela_login.snackbar.content.value = "CPF não encontrado. Verifique os dados."
-            tela_login.snackbar.bgcolor = ft.Colors.RED_600
-            tela_login.snackbar.open = True
-            page.snack_bar = tela_login.snackbar
-            page.update()
+            tela_login.notificador.erro(page, "CPF não encontrado. Verifique os dados.")
             return
 
         if not cliente.verificar_senha(senha):
-            tela_login.snackbar.content.value = "Senha incorreta. Tente novamente."
-            tela_login.snackbar.bgcolor = ft.Colors.RED_600
-            tela_login.snackbar.open = True
-            page.snack_bar = tela_login.snackbar
-            page.update()
+            tela_login.notificador.erro(page, "Senha incorreta. Tente novamente.")
             return
 
-        # Login bem-sucedido → mostrar tela do cliente
+        # Login bem-sucedido, ir para tela do cliente:
         tela_cliente = TelaCliente(cliente, on_voltar_cliente)
         page.controls.clear()
         page.add(tela_cliente.view)
@@ -61,30 +55,40 @@ def main(page: ft.Page):
 
         if cliente_existente:
             if cliente_existente.nome.strip() != dados["nome"].strip():
-                mensagens.append("Nome não confere com o já cadastrado.")
+                mensagens.append(
+                    "Nome não confere com o já cadastrado."
+                )
             if cliente_existente.email.strip() != dados["email"].strip():
-                mensagens.append("Email não confere com o já cadastrado.")
+                mensagens.append(
+                    "Email não confere com o já cadastrado."
+                )
             if cliente_existente.telefone.strip() != dados["telefone"].strip():
-                mensagens.append("Telefone não confere com o já cadastrado.")
+                mensagens.append(
+                    "Telefone não confere com o já cadastrado."
+                )
             if cliente_existente.senha.strip() != dados["senha"].strip():
-                mensagens.append("Senha não confere com o já cadastrado.")
+                mensagens.append(
+                    "Senha não confere com o já cadastrado."
+                )
             if cliente_existente.data_nascimento.strip() != dados["data_nascimento"].strip():
-                mensagens.append("Data de nascimento não confere com o já cadastrado.")
+                mensagens.append(
+                    "Data de nascimento não confere com o já cadastrado."
+                )
 
         if mensagens:
             tela_cadastro.mostrar_erro(page, "\n".join(mensagens))
             return
 
         resp = banco.abrir_conta(
-            tipo_conta=dados["tipo_conta"],
-            nome=dados["nome"],
-            cpf=dados["cpf"],
-            telefone=dados["telefone"],
-            email=dados["email"],
-            cep=cep,
-            numero_endereco=numero,
-            senha=dados["senha"],
-            data_nascimento=dados["data_nascimento"]
+            tipo_conta      = dados["tipo_conta"],
+            nome            = dados["nome"],
+            cpf             = dados["cpf"],
+            telefone        = dados["telefone"],
+            email           = dados["email"],
+            cep             = cep,
+            numero_endereco = numero,
+            senha           = dados["senha"],
+            data_nascimento = dados["data_nascimento"]
         )
 
         if resp and resp["sucesso"]:

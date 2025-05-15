@@ -1,5 +1,6 @@
 import flet as ft
 from interface.componentes.campo_com_icone import CampoComIcone
+from interface.componentes.notificador import Notificador
 
 class TelaCadastro:
     def __init__(self, on_cadastro_callback=None, on_voltar_login=None):
@@ -16,13 +17,20 @@ class TelaCadastro:
         self.senha_ref      = ft.Ref[str]()
         self.tipo_conta_ref = ft.Ref[str]()
 
-        self.snackbar = ft.SnackBar(ft.Text(""))
+        self.notificador = Notificador()
         self.view = self.criar_view()
 
     def criar_view(self):
-        titulo = ft.Text("CADASTRO DE CONTA", size=24, weight=ft.FontWeight.BOLD)
+        titulo = ft.Text(
+            "CADASTRO DE CONTA", 
+            size=24, 
+            weight=ft.FontWeight.BOLD
+        )
 
-        tipo_conta_texto = ft.Text("Qual tipo de conta deseja criar?", size=16)
+        tipo_conta_texto = ft.Text(
+            "Qual tipo de conta deseja criar?", 
+            size=16
+        )
 
         tipo_conta_grupo = ft.RadioGroup(
             content=ft.Row(
@@ -48,9 +56,15 @@ class TelaCadastro:
             spacing=10
         )
 
-        botao_cadastro = ft.ElevatedButton("Fazer cadastro", on_click=self.on_cadastrar_click)
+        botao_cadastro = ft.ElevatedButton(
+            "Fazer cadastro", 
+            on_click=self.on_cadastrar_click
+        )
 
-        link_login = ft.TextButton("Já tem uma conta? Fazer login", on_click=self.on_voltar_login)
+        link_login = ft.TextButton(
+            "Já tem uma conta? Fazer login", 
+            on_click=self.on_voltar_login
+        )
 
         return ft.Container(
             content=ft.Column(
@@ -61,7 +75,7 @@ class TelaCadastro:
                     campos,
                     botao_cadastro,
                     link_login,
-                    self.snackbar
+                    self.notificador.get_snackbar()
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -71,30 +85,22 @@ class TelaCadastro:
         )
 
     def mostrar_erro(self, page, mensagem):
-        self.snackbar.content.value = mensagem
-        self.snackbar.bgcolor = ft.Colors.RED_600
-        self.snackbar.open = True
-        page.snack_bar = self.snackbar
-        page.update()
+        self.notificador.erro(page, mensagem)
 
     def mostrar_sucesso(self, page, mensagem):
-        self.snackbar.content.value = mensagem
-        self.snackbar.bgcolor = ft.Colors.GREEN_600
-        self.snackbar.open = True
-        page.snack_bar = self.snackbar
-        page.update()
+        self.notificador.sucesso(page, mensagem)
 
     def on_cadastrar_click(self, e):
         page = e.page
         dados = {
-            "tipo_conta": self.tipo_conta_ref.current.value,
-            "nome": self.nome_ref.current.value,
-            "cpf": self.cpf_ref.current.value,
-            "telefone": self.tel_ref.current.value,
-            "data_nascimento": self.nasc_ref.current.value,
-            "endereco": self.end_ref.current.value,
-            "email": self.email_ref.current.value,
-            "senha": self.senha_ref.current.value,
+            "tipo_conta"      : self.tipo_conta_ref.current.value,
+            "nome"            : self.nome_ref.current.value,
+            "cpf"             : self.cpf_ref.current.value,
+            "telefone"        : self.tel_ref.current.value,
+            "data_nascimento" : self.nasc_ref.current.value,
+            "endereco"        : self.end_ref.current.value,
+            "email"           : self.email_ref.current.value,
+            "senha"           : self.senha_ref.current.value,
         }
         print("Cadastro:", dados)
 
@@ -118,7 +124,7 @@ class TelaCadastro:
             erros.append("Senha muito curta. Mínimo de 9 caracteres.")
 
         if erros:
-            self.mostrar_erro(page, "\n".join(erros))
+            self.notificador.erro(page, "\n".join(erros))
             return
 
         if self.on_cadastro_callback:
