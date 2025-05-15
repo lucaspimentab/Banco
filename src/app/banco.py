@@ -11,7 +11,18 @@ class Banco:
     def __init__(self):
         self.clientes = []
 
-    def abrir_conta(self, tipo_conta, nome, cpf, telefone, email, cep, numero_endereco, senha, data_nascimento):
+    def abrir_conta(
+            self, 
+            tipo_conta, 
+            nome, 
+            cpf, 
+            telefone, 
+            email, 
+            cep, 
+            numero_endereco, 
+            senha, 
+            data_nascimento
+        ):
         mensagens = []
 
         # Verificar idade mínima
@@ -92,17 +103,18 @@ class Banco:
                     "tipo": conta.tipo,
                     "saldo": conta.saldo
                 })
+            
             dados.append({
-                "id": cliente.id,
-                "nome": cliente.nome,
-                "cpf": cliente.cpf,
-                "email": cliente.email,
-                "data_nascimento": cliente.data_nascimento,
-                "endereco": cliente.endereco,
-                "telefone": cliente.telefone,
-                "data_cadastro": cliente.data_cadastro,
-                "senha": cliente.senha,
-                "contas": contas
+                "id"              : cliente.id,
+                "nome"            : cliente.nome,
+                "cpf"             : cliente.cpf,
+                "email"           : cliente.email,
+                "data_nascimento" : cliente.data_nascimento,
+                "endereco"        : cliente.endereco,
+                "telefone"        : cliente.telefone,
+                "data_cadastro"   : cliente.data_cadastro,
+                "senha"           : cliente.senha,
+                "contas"          : contas
             })
 
         os.makedirs(os.path.dirname(caminho), exist_ok=True)

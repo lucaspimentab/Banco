@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nome": "mateus de souza",
+    "cpf": "12345678901",
+    "email": "mateus@email.com",
+    "data_nascimento": "2000-01-01",
+    "endereco": "Rua Paramirim, 532, Milionários (Barreiro) - Belo Horizonte/MG",
+    "telefone": "3112345678",
+    "data_cadastro": "2025-05-15 16:10:40",
+    "senha": "Senha12345",
+    "contas": [
+      {
+        "numero": 1000,
+        "tipo": "Corrente",
+        "saldo": 0.0
+      }
+    ]
+  }
+]
