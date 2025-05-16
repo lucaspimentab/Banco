@@ -103,5 +103,6 @@ class TelaCadastro:
     # Função para lidar com o botão de cadastro
     async def on_cadastrar_click(self, e):
         dados = self.coletar_dados()
+        print("Cadastro:", dados) # Para teste
         if self.on_cadastro_callback:
-            self.on_cadastro_callback(dados)
+            await self.on_cadastro_callback(dados)

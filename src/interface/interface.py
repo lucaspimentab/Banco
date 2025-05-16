@@ -3,6 +3,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import flet as ft
+import asyncio
 from interface.telas.cadastro import TelaCadastro
 from interface.telas.login import TelaLogin
 from interface.telas.cliente import TelaCliente
@@ -43,17 +44,19 @@ def main(page: ft.Page):
         page.controls.clear()
         page.add(tela_cliente.view)
 
-    def cadastro_realizado(dados):
+    async def cadastro_realizado(dados):
         resultado = servico_cadastro.realizar_cadastro(dados)
 
         if resultado["sucesso"]:
             banco.salvar_dados("data/contas.json")
             tela_cadastro.notificador.sucesso(page, "✅ Conta criada com sucesso!")
+            page.update()
+
+            await asyncio.sleep(1)
             ir_para_login()
         else:
             tela_cadastro.notificador.erro(page, "\n".join(resultado["erros"]))
-        
-        page.update()
+            page.update()
 
     tela_login = TelaLogin(
         on_login_callback=login_realizado,
