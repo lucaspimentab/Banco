@@ -6,7 +6,7 @@ import flet as ft
 import asyncio
 from interface.telas.cadastro import TelaCadastro
 from interface.telas.login import TelaLogin
-from interface.telas.cliente import TelaCliente
+from interface.telas.cliente.cliente import TelaCliente
 from app.banco import Banco
 from app.servicos.servico_cadastro import ServicoCadastro
 
@@ -23,7 +23,7 @@ def main(page: ft.Page):
         page.controls.clear()
         page.add(tela_cadastro.view)
 
-    def on_voltar_cliente(e=None):
+    def on_logout_cliente(e=None):
         page.controls.clear()
         page.add(tela_login.criar_view(page))
 
@@ -40,7 +40,7 @@ def main(page: ft.Page):
             return
 
         # Login bem-sucedido, ir para tela do cliente:
-        tela_cliente = TelaCliente(cliente, on_voltar_cliente)
+        tela_cliente = TelaCliente(cliente, on_logout_cliente)
         page.controls.clear()
         page.add(tela_cliente.view)
 
