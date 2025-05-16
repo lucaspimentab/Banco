@@ -1,12 +1,16 @@
 import flet as ft
 from interface.componentes.campo_com_icone import CampoComIcone
+from interface.componentes.notificador import Notificador
 
 class TelaCadastro:
     def __init__(self, on_cadastro_callback=None, on_voltar_login=None):
+        
+        self.notificador = Notificador()
+
         self.on_cadastro_callback = on_cadastro_callback
         self.on_voltar_login = on_voltar_login
 
-        # Referências
+        # Referências dos campos de input
         self.nome_ref       = ft.Ref[str]()
         self.cpf_ref        = ft.Ref[str]()
         self.tel_ref        = ft.Ref[str]()
@@ -16,13 +20,20 @@ class TelaCadastro:
         self.senha_ref      = ft.Ref[str]()
         self.tipo_conta_ref = ft.Ref[str]()
 
-        self.snackbar = ft.SnackBar(ft.Text(""))
         self.view = self.criar_view()
 
+    # Função para criar a estrutura visual da página
     def criar_view(self):
-        titulo = ft.Text("CADASTRO DE CONTA", size=24, weight=ft.FontWeight.BOLD)
+        titulo = ft.Text(
+            "CADASTRO DE CONTA", 
+            size=24, 
+            weight=ft.FontWeight.BOLD
+        )
 
-        tipo_conta_texto = ft.Text("Qual tipo de conta deseja criar?", size=16)
+        tipo_conta_texto = ft.Text(
+            "Qual tipo de conta deseja criar?", 
+            size=16
+        )
 
         tipo_conta_grupo = ft.RadioGroup(
             content=ft.Row(
@@ -48,9 +59,15 @@ class TelaCadastro:
             spacing=10
         )
 
-        botao_cadastro = ft.ElevatedButton("Fazer cadastro", on_click=self.on_cadastrar_click)
+        botao_cadastro = ft.ElevatedButton(
+            "Fazer cadastro", 
+            on_click=self.on_cadastrar_click
+        )
 
-        link_login = ft.TextButton("Já tem uma conta? Fazer login", on_click=self.on_voltar_login)
+        link_login = ft.TextButton(
+            "Já tem uma conta? Fazer login", 
+            on_click=self.on_voltar_login
+        )
 
         return ft.Container(
             content=ft.Column(
@@ -61,7 +78,7 @@ class TelaCadastro:
                     campos,
                     botao_cadastro,
                     link_login,
-                    self.snackbar
+                    self.notificador.get_snackbar()
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -70,56 +87,22 @@ class TelaCadastro:
             expand=True
         )
 
-    def mostrar_erro(self, page, mensagem):
-        self.snackbar.content.value = mensagem
-        self.snackbar.bgcolor = ft.Colors.RED_600
-        self.snackbar.open = True
-        page.snack_bar = self.snackbar
-        page.update()
-
-    def mostrar_sucesso(self, page, mensagem):
-        self.snackbar.content.value = mensagem
-        self.snackbar.bgcolor = ft.Colors.GREEN_600
-        self.snackbar.open = True
-        page.snack_bar = self.snackbar
-        page.update()
-
-    def on_cadastrar_click(self, e):
-        page = e.page
-        dados = {
-            "tipo_conta": self.tipo_conta_ref.current.value,
-            "nome": self.nome_ref.current.value,
-            "cpf": self.cpf_ref.current.value,
-            "telefone": self.tel_ref.current.value,
-            "data_nascimento": self.nasc_ref.current.value,
-            "endereco": self.end_ref.current.value,
-            "email": self.email_ref.current.value,
-            "senha": self.senha_ref.current.value,
+    # Função para coletar dados inseridos pelo usuário
+    def coletar_dados(self):
+        return {
+            "tipo_conta"      : self.tipo_conta_ref.current.value,
+            "nome"            : self.nome_ref.current.value,
+            "cpf"             : self.cpf_ref.current.value,
+            "telefone"        : self.tel_ref.current.value,
+            "data_nascimento" : self.nasc_ref.current.value,
+            "endereco"        : self.end_ref.current.value,
+            "email"           : self.email_ref.current.value,
+            "senha"           : self.senha_ref.current.value,
         }
-        print("Cadastro:", dados)
 
-        erros = []
-
-        if not dados["tipo_conta"]:
-            erros.append("Selecione um tipo de conta.")
-        if not dados["nome"].strip():
-            erros.append("Preencha o nome.")
-        if not dados["cpf"].isdigit() or len(dados["cpf"]) != 11:
-            erros.append("CPF inválido. Digite apenas 11 dígitos.")
-        if not dados["telefone"].isdigit() or len(dados["telefone"]) < 10:
-            erros.append("Telefone inválido. Ex: 31991234567.")
-        if not dados["data_nascimento"] or len(dados["data_nascimento"]) != 10:
-            erros.append("Informe a data de nascimento no formato aaaa-mm-dd.")
-        if "," not in dados["endereco"]:
-            erros.append("Endereço incompleto. Use CEP + número da casa, separado por vírgula.")
-        if "@" not in dados["email"] or "." not in dados["email"]:
-            erros.append("Email inválido.")
-        if len(dados["senha"]) < 9:
-            erros.append("Senha muito curta. Mínimo de 9 caracteres.")
-
-        if erros:
-            self.mostrar_erro(page, "\n".join(erros))
-            return
-
+    # Função para lidar com o botão de cadastro
+    async def on_cadastrar_click(self, e):
+        dados = self.coletar_dados()
+        print("Cadastro:", dados) # Para teste
         if self.on_cadastro_callback:
-            self.on_cadastro_callback(dados)
+            await self.on_cadastro_callback(dados)

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "nome": "Mateus",
+    "cpf": "12345678901",
+    "email": "mateus@email.com",
+    "data_nascimento": "2000-01-01",
+    "endereco": "Rua ABC, 001, Bairro X - Belo Horizonte/MG",
+    "telefone": "3112345678",
+    "data_cadastro": "2025-05-15 16:10:40",
+    "senha": "Senha12345",
+    "contas": [
+      {
+        "numero": 1000,
+        "tipo": "Corrente",
+        "saldo": 0.0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nome": "Pedro Braga",
+    "cpf": "12345678902",
+    "email": "pedro@email.com",
+    "data_nascimento": "2000-01-01",
+    "endereco": "Rua ABC, 002, Bairro X - Belo Horizonte/MG",
+    "telefone": "3112345678",
+    "data_cadastro": "2025-05-15 19:55:50",
+    "senha": "Senha12345",
+    "contas": [
+      {
+        "numero": 1001,
+        "tipo": "Corrente",
+        "saldo": 0.0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nome": "João Paulo",
+    "cpf": "12345678903",
+    "email": "jpaulo@email.com",
+    "data_nascimento": "2000-01-01",
+    "endereco": "Rua XYZ, 003, Bairro C - Belo Horizonte/MG",
+    "telefone": "31123456780",
+    "data_cadastro": "2025-05-15 21:37:40",
+    "senha": "Senha12345",
+    "contas": [
+      {
+        "numero": 1002,
+        "tipo": "Corrente",
+        "saldo": 0.0
+      }
+    ]
+  }
+]
