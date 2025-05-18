@@ -1,17 +1,18 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 import flet as ft
 import asyncio
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from config.caminhos import CAMINHO_DADOS_JSON
 from interface.telas.cadastro import TelaCadastro
 from interface.telas.login import TelaLogin
-from interface.telas.cliente import TelaCliente
+from interface.telas.cliente.cliente import TelaCliente
 from app.banco import Banco
 from app.servicos.servico_cadastro import ServicoCadastro
 
 banco = Banco()
-banco.carregar_dados("data/contas.json")
+banco.carregar_dados(CAMINHO_DADOS_JSON)
 servico_cadastro = ServicoCadastro(banco)
 
 def main(page: ft.Page):
@@ -23,7 +24,7 @@ def main(page: ft.Page):
         page.controls.clear()
         page.add(tela_cadastro.view)
 
-    def on_voltar_cliente(e=None):
+    def on_logout_cliente(e=None):
         page.controls.clear()
         page.add(tela_login.criar_view(page))
 
@@ -40,7 +41,7 @@ def main(page: ft.Page):
             return
 
         # Login bem-sucedido, ir para tela do cliente:
-        tela_cliente = TelaCliente(cliente, on_voltar_cliente)
+        tela_cliente = TelaCliente(banco, cliente, on_logout_cliente)
         page.controls.clear()
         page.add(tela_cliente.view)
 
@@ -48,7 +49,7 @@ def main(page: ft.Page):
         resultado = servico_cadastro.realizar_cadastro(dados)
 
         if resultado["sucesso"]:
-            banco.salvar_dados("data/contas.json")
+            banco.salvar_dados(CAMINHO_DADOS_JSON)
             tela_cadastro.notificador.sucesso(page, "✅ Conta criada com sucesso!")
             page.update()
 
