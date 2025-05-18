@@ -73,4 +73,7 @@ class ServicoPagamento:
         )
         conta_origem.registrar_transacao(transacao)
 
-        return {"sucesso": True}
+        return {
+            "sucesso": True,
+            "mensagem": f"Pagamento de R$ {valor:.2f} realizado com sucesso para {cpf_destino}."
+        }

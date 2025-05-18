@@ -38,6 +38,6 @@ class TelaPagamento:
         resultado = self.servico.efetuar_pagamento(dados)
 
         if resultado["sucesso"]:
-            self.notificador.sucesso(e.page, "✅ Pagamento realizado com sucesso!")
+            self.notificador.sucesso(e.page, resultado["mensagem"])
         else:
             self.notificador.erro(e.page, "\n".join(resultado["erros"]))
