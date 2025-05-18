@@ -1,6 +1,7 @@
 import flet as ft
 from interface.componentes.notificador import Notificador
 from app.servicos.servico_pagamento import ServicoPagamento
+from config.caminhos import CAMINHO_DADOS_JSON
 
 class TelaPagamento:
     def __init__(self, banco, cliente):
@@ -63,7 +64,7 @@ class TelaPagamento:
         resultado = self.servico.efetuar_pagamento(dados)
 
         if resultado["sucesso"]:
-            self.servico.banco.salvar_dados("dados/banco.json")
+            self.servico.banco.salvar_dados(CAMINHO_DADOS_JSON)
             self.notificador.sucesso(e.page, resultado["mensagem"])
         else:
             self.notificador.erro(e.page, "\n".join(resultado["erros"]))

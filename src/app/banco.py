@@ -1,23 +1,32 @@
 import json
 import os
 import requests
+
 from datetime import datetime
+from config.caminhos import CAMINHO_DADOS_JSON
 from app.cliente import Cliente
 from app.conta_corrente import ContaCorrente
 from app.conta_poupanca import ContaPoupanca
+from app.transacao import Transacao
 
 class Banco:
     def __init__(self):
-        """Inicializa o banco com uma lista vazia de clientes."""
+        """
+        Inicializa o banco com uma lista vazia de clientes;
+        Carrega os dados previamente salvos do arquivo JSON.
+        """
         self.clientes = []
+        self.carregar_dados(CAMINHO_DADOS_JSON)
 
     def abrir_conta(self, tipo_conta, nome, cpf, telefone, email, cep, num_end, senha, data_nascimento):
         """
-        Cria um cliente e abre uma nova conta, se todas as validações forem atendidas:
-        - Idade mínima de 18 anos
-        - CEP válido via API ViaCEP
-        - Não ter conta do mesmo tipo já existente
-        - Dados consistentes com o cliente já existente (se for o caso)
+        Cria um cliente e abre uma nova conta bancária do tipo especificado, realizando as seguintes validações:
+        
+        - Verifica se o cliente tem pelo menos 18 anos;
+        - Valida o CEP através da API ViaCEP e formata o endereço completo;
+        - Verifica se já existe uma conta do mesmo tipo para o CPF informado;
+        - Se o cliente já existe, os dados informados devem coincidir com os dados cadastrados anteriormente;
+        - Cria uma nova conta corrente ou poupança e associa ao cliente (novo ou existente).
         """
         mensagens = []
 
@@ -86,17 +95,18 @@ class Banco:
         else:
             return {"sucesso": False, "mensagens": ["Tipo de conta inválido."]}
 
+        self.salvar_dados(CAMINHO_DADOS_JSON)
         return {"sucesso": True, "cliente": cliente}
 
     def buscar_cliente_por_cpf(self, cpf):
-        """Retorna o cliente com o CPF especificado, se existir."""
+        """Busca e retorna o cliente com o CPF especificado, se estiver cadastrado no banco."""
         for cliente in self.clientes:
             if cliente.cpf == cpf:
                 return cliente
         return None
 
     def buscar_conta_por_numero(self, numero_conta):
-        """Retorna a conta com o número especificado, buscando entre todos os clientes."""
+        """Busca e retorna a conta com o número especificado, verificando entre todas as contas de todos os clientes."""
         for cliente in self.clientes:
             conta = cliente.buscar_conta(numero_conta)
             if conta:
@@ -105,8 +115,8 @@ class Banco:
 
     def salvar_dados(self, caminho):
         """
-        Salva os dados dos clientes e suas contas em um arquivo JSON.
-        Cria os diretórios necessários, se não existirem.
+        Salva os dados de todos os clientes, suas contas e transações em um arquivo JSON.
+        Cria os diretórios do caminho informado, caso não existam.
         """
         dados = []
         for cliente in self.clientes:
@@ -115,7 +125,18 @@ class Banco:
                 contas.append({
                     "numero": conta.numero_conta,
                     "tipo": conta.tipo,
-                    "saldo": conta.saldo
+                    "saldo": conta.saldo,
+                    "transacoes": [
+                        {
+                            "tipo": t.tipo,
+                            "valor": t.valor,
+                            "origem": t.origem,
+                            "destino": t.destino,
+                            "descricao": t.descricao,
+                            "data_hora": t.data_hora.strftime("%Y-%m-%d %H:%M:%S")
+                        }
+                        for t in conta.transacoes
+                    ]
                 })
 
             dados.append({
@@ -137,10 +158,12 @@ class Banco:
 
     def carregar_dados(self, caminho):
         """
-        Carrega os dados dos clientes e contas a partir de um arquivo JSON.
-        Recria os objetos Cliente e Conta associados.
+        Carrega os dados de clientes, contas e transações a partir de um arquivo JSON.
+        Reconstrói os objetos Cliente, ContaCorrente/ContaPoupanca e Transacao, preservando os dados persistidos.
         """
+        print(f">> Verificando se existe o caminho: {caminho}")
         if not os.path.exists(caminho):
+            print(">> Caminho não existe. Nenhum dado carregado.")
             return
 
         self.clientes.clear()
@@ -148,7 +171,11 @@ class Banco:
         with open(caminho, 'r', encoding='utf-8') as f:
             dados = json.load(f)
 
+        print(">> Dados carregados do JSON:")
+        print(json.dumps(dados, indent=2, ensure_ascii=False))
+        
         for cliente_dado in dados:
+            print(f">> Reconstruindo cliente CPF: {cliente_dado['cpf']}")
             cliente = Cliente(
                 cliente_dado["nome"],
                 cliente_dado["cpf"],
@@ -161,10 +188,26 @@ class Banco:
             cliente.id = cliente_dado["id"]
             cliente.data_cadastro = cliente_dado["data_cadastro"]
 
-            for conta in cliente_dado["contas"]:
-                if conta["tipo"].lower() == "corrente":
-                    ContaCorrente(cliente, conta["saldo"])
+            for conta_dado in cliente_dado["contas"]:
+                print(f"   - Criando conta {conta_dado['tipo']} nº {conta_dado['numero']}")
+                if conta_dado["tipo"].lower() == "corrente":
+                    conta = ContaCorrente(cliente, conta_dado["saldo"])
                 else:
-                    ContaPoupanca(cliente, conta["saldo"])
+                    conta = ContaPoupanca(cliente, conta_dado["saldo"])
+
+                for t in conta_dado.get("transacoes", []):
+                    transacao = Transacao(
+                        tipo=t["tipo"],
+                        valor=t["valor"],
+                        origem=t["origem"],
+                        destino=t["destino"],
+                        descricao=t["descricao"],
+                        data_hora=datetime.strptime(t["data_hora"], "%Y-%m-%d %H:%M:%S")
+                    )
+                    conta.transacoes.append(transacao)
 
             self.clientes.append(cliente)
+
+            print(f">> Total de clientes carregados: {len(self.clientes)}")
+            for c in self.clientes:
+                print(f"   - {c.nome} | CPF: {c.cpf}")

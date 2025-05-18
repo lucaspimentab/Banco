@@ -1,9 +1,10 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 import flet as ft
 import asyncio
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from config.caminhos import CAMINHO_DADOS_JSON
 from interface.telas.cadastro import TelaCadastro
 from interface.telas.login import TelaLogin
 from interface.telas.cliente.cliente import TelaCliente
@@ -11,7 +12,7 @@ from app.banco import Banco
 from app.servicos.servico_cadastro import ServicoCadastro
 
 banco = Banco()
-banco.carregar_dados("data/contas.json")
+banco.carregar_dados(CAMINHO_DADOS_JSON)
 servico_cadastro = ServicoCadastro(banco)
 
 def main(page: ft.Page):
@@ -48,7 +49,7 @@ def main(page: ft.Page):
         resultado = servico_cadastro.realizar_cadastro(dados)
 
         if resultado["sucesso"]:
-            banco.salvar_dados("data/contas.json")
+            banco.salvar_dados(CAMINHO_DADOS_JSON)
             tela_cadastro.notificador.sucesso(page, "✅ Conta criada com sucesso!")
             page.update()
 
