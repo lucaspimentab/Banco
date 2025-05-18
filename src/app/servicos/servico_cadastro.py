@@ -1,11 +1,26 @@
 class ServicoCadastro:
     def __init__(self, banco):
+        """
+        Serviço responsável por realizar o cadastro de novos clientes e abertura de contas.
+        
+        Parâmetro:
+        - banco: Instância do banco que gerencia os clientes e contas.
+        """
         self.banco = banco
 
     def realizar_cadastro(self, dados):
+        """
+        Valida os dados e solicita abertura de conta, caso todas as verificações sejam bem-sucedidas.
+
+        Parâmetro:
+        - dados (dict): Dicionário contendo os dados do formulário de cadastro.
+
+        Retorna:
+        - dict: {"sucesso": bool, "erros" ou "mensagens": list}
+        """
         erros = []
 
-        # Validação básica
+        # Validação básica de campos
         if not dados["tipo_conta"]:
             erros.append("Selecione um tipo de conta.")
 
@@ -21,6 +36,7 @@ class ServicoCadastro:
         if not dados["data_nascimento"] or len(dados["data_nascimento"]) != 10:
             erros.append("Data de nascimento inválida.")
 
+        # Validação do endereço (espera CEP, número separados por vírgula)
         if "," not in dados["endereco"]:
             erros.append("Endereço deve conter CEP e número separados por vírgula.")
         else:
@@ -34,24 +50,28 @@ class ServicoCadastro:
         if len(dados["senha"]) < 9:
             erros.append("Senha muito curta.")
 
+        # Verificação de cliente já existente
         cliente_existente = self.banco.buscar_cliente_por_cpf(dados["cpf"])
-
         if cliente_existente:
             if cliente_existente.nome.strip() != dados["nome"].strip():
                 erros.append("Nome não confere com o já cadastrado.")
+            
             if cliente_existente.email.strip() != dados["email"].strip():
                 erros.append("Email não confere com o já cadastrado.")
+            
             if cliente_existente.telefone.strip() != dados["telefone"].strip():
                 erros.append("Telefone não confere com o já cadastrado.")
+            
             if cliente_existente.senha.strip() != dados["senha"].strip():
                 erros.append("Senha não confere com o já cadastrado.")
+            
             if cliente_existente.data_nascimento.strip() != dados["data_nascimento"].strip():
                 erros.append("Data de nascimento não confere com o já cadastrado.")
 
         if erros:
             return {"sucesso": False, "erros": erros}
 
-        # Só cria conta se passou todas as validações
+        # Chama o banco para criação da conta
         resultado = self.banco.abrir_conta(
             tipo_conta      = dados["tipo_conta"],
             nome            = dados["nome"],
