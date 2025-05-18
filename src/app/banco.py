@@ -6,23 +6,19 @@ from app.cliente import Cliente
 from app.conta_corrente import ContaCorrente
 from app.conta_poupanca import ContaPoupanca
 
-
 class Banco:
     def __init__(self):
+        """Inicializa o banco com uma lista vazia de clientes."""
         self.clientes = []
 
-    def abrir_conta(
-            self, 
-            tipo_conta, 
-            nome, 
-            cpf, 
-            telefone, 
-            email, 
-            cep, 
-            numero_endereco, 
-            senha, 
-            data_nascimento
-        ):
+    def abrir_conta(self, tipo_conta, nome, cpf, telefone, email, cep, num_end, senha, data_nascimento):
+        """
+        Cria um cliente e abre uma nova conta, se todas as validações forem atendidas:
+        - Idade mínima de 18 anos
+        - CEP válido via API ViaCEP
+        - Não ter conta do mesmo tipo já existente
+        - Dados consistentes com o cliente já existente (se for o caso)
+        """
         mensagens = []
 
         # Verificar idade mínima
@@ -47,29 +43,41 @@ class Banco:
                 bairro = data.get("bairro", "")
                 cidade = data.get("localidade", "")
                 estado = data.get("uf", "")
-                endereco = f"{logradouro}, {numero_endereco}, {bairro} - {cidade}/{estado}"
+                endereco = f"{logradouro}, {num_end}, {bairro} - {cidade}/{estado}"
         except Exception as e:
             mensagens.append(f"Erro ao buscar CEP: {str(e)}")
 
+        # Se houver erros de validação até aqui, retornar
         if mensagens:
             return {"sucesso": False, "mensagens": mensagens}
 
+        # Verificar se já existe cliente com o mesmo CPF
         cliente_existente = self.buscar_cliente_por_cpf(cpf)
         if cliente_existente:
-            # Verificar se já tem uma conta do mesmo tipo
             for conta in cliente_existente.contas:
                 if conta.tipo.lower() == tipo_conta.lower():
                     return {"sucesso": False, "mensagens": ["CPF já possui conta desse tipo."]}
 
-            # Validar se os dados inseridos batem com os dados existentes
-            if cliente_existente.nome != nome or cliente_existente.email != email or cliente_existente.telefone != telefone or cliente_existente.senha != senha or cliente_existente.data_nascimento != data_nascimento:
-                return {"sucesso": False, "mensagens": ["Os dados informados não correspondem ao cliente já existente com este CPF."]}
+            # Validar dados do cliente
+            if (
+                cliente_existente.nome != nome or 
+                cliente_existente.email != email or 
+                cliente_existente.telefone != telefone or 
+                cliente_existente.senha != senha or 
+                cliente_existente.data_nascimento != data_nascimento
+            ):
+                return {
+                    "sucesso": False, 
+                    "mensagens": ["Os dados informados não correspondem ao cliente já existente com este CPF."]
+                }
 
             cliente = cliente_existente
         else:
+            # Criar novo cliente e adicionar à lista
             cliente = Cliente(nome, cpf, data_nascimento, email, endereco, telefone, senha)
             self.clientes.append(cliente)
 
+        # Abrir conta do tipo solicitado
         tipo_conta = tipo_conta.lower()
         if tipo_conta == "corrente":
             ContaCorrente(cliente)
@@ -81,12 +89,14 @@ class Banco:
         return {"sucesso": True, "cliente": cliente}
 
     def buscar_cliente_por_cpf(self, cpf):
+        """Retorna o cliente com o CPF especificado, se existir."""
         for cliente in self.clientes:
             if cliente.cpf == cpf:
                 return cliente
         return None
 
     def buscar_conta_por_numero(self, numero_conta):
+        """Retorna a conta com o número especificado, buscando entre todos os clientes."""
         for cliente in self.clientes:
             conta = cliente.buscar_conta(numero_conta)
             if conta:
@@ -94,6 +104,10 @@ class Banco:
         return None
 
     def salvar_dados(self, caminho):
+        """
+        Salva os dados dos clientes e suas contas em um arquivo JSON.
+        Cria os diretórios necessários, se não existirem.
+        """
         dados = []
         for cliente in self.clientes:
             contas = []
@@ -103,7 +117,7 @@ class Banco:
                     "tipo": conta.tipo,
                     "saldo": conta.saldo
                 })
-            
+
             dados.append({
                 "id"              : cliente.id,
                 "nome"            : cliente.nome,
@@ -122,8 +136,13 @@ class Banco:
             json.dump(dados, f, indent=2, ensure_ascii=False)
 
     def carregar_dados(self, caminho):
+        """
+        Carrega os dados dos clientes e contas a partir de um arquivo JSON.
+        Recria os objetos Cliente e Conta associados.
+        """
         if not os.path.exists(caminho):
             return
+
         self.clientes.clear()
 
         with open(caminho, 'r', encoding='utf-8') as f:
