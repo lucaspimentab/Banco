@@ -40,7 +40,7 @@ def main(page: ft.Page):
             return
 
         # Login bem-sucedido, ir para tela do cliente:
-        tela_cliente = TelaCliente(cliente, on_logout_cliente)
+        tela_cliente = TelaCliente(banco, cliente, on_logout_cliente)
         page.controls.clear()
         page.add(tela_cliente.view)
 

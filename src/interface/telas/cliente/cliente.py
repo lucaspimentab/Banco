@@ -4,7 +4,8 @@ from interface.telas.cliente.pagamento import TelaPagamento
 from interface.telas.cliente.extrato import TelaExtrato
 
 class TelaCliente:
-    def __init__(self, cliente, on_logout):
+    def __init__(self, banco, cliente, on_logout):
+        self.banco = banco
         self.cliente = cliente
         self.on_logout = on_logout
 
@@ -15,7 +16,7 @@ class TelaCliente:
     def criar_view(self):
         sidebar = ft.Container(
             width=250,
-            bgcolor=ft.colors.GREY_200,
+            bgcolor=ft.Colors.GREY_200,
             padding=20,
             content=ft.Column(
                 controls=[
@@ -48,7 +49,7 @@ class TelaCliente:
         self._mostrar(TelaPerfil(self.cliente), e)
 
     def mostrar_pagamento(self, e=None):
-        self._mostrar(TelaPagamento(self.cliente), e)
+        self._mostrar(TelaPagamento(self.banco, self.cliente), e)
 
     def mostrar_extrato(self, e=None):
         self._mostrar(TelaExtrato(self.cliente), e)

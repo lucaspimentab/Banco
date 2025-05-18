@@ -2,7 +2,7 @@ import flet as ft
 from interface.componentes.notificador import Notificador
 from app.servicos.servico_extrato import ServicoExtrato
 
-class TelaSaldoExtrato:
+class TelaExtrato:
     def __init__(self, cliente):
         """
         Tela que exibe o saldo e o extrato da conta padrão de um cliente.

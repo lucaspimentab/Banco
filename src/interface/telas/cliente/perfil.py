@@ -30,13 +30,8 @@ class TelaPerfil:
             ft.Text(f"Email: {self.cliente.email}", size=16),
             ft.Text(f"Telefone: {self.cliente.telefone}", size=16),
             ft.Text(f"Data de Nascimento: {self.cliente.data_nascimento}", size=16),
+            ft.Text(f"Endereço: {self.cliente.endereco}", size=16)
         ], spacing=5)
-
-        # Endereço
-        endereco = ft.Text(
-            f"Endereço: {self.cliente.endereco.cep}, {self.cliente.endereco.numero}",
-            size=16
-        )
 
         # Lista de contas do cliente
         contas = ft.Column(
@@ -57,7 +52,6 @@ class TelaPerfil:
                 controls=[
                     titulo,
                     dados_pessoais,
-                    endereco,
                     ft.Divider(),
                     contas,
                     self.notificador.get_snackbar()
