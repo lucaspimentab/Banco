@@ -132,6 +132,15 @@ class Conta(ABC):
             "novo_saldo": self.saldo
         }
 
+    def registrar_transacao(self, transacao):
+        """
+        Registra uma transação na lista de transações da conta.
+
+        Parâmetros:
+        - transacao: Instância da classe Transacao representando a operação realizada.
+        """
+        self.transacoes.append(transacao)
+
     def get_resumo(self):
         """
         Retorna um dicionário com os dados resumidos da conta,
