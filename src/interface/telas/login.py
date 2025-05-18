@@ -1,5 +1,6 @@
 import flet as ft
 from interface.componentes.campo_com_icone import CampoComIcone
+from interface.componentes.notificador import Notificador
 
 class TelaLogin:
     def __init__(self, on_login_callback=None, on_ir_cadastro=None):
@@ -8,23 +9,19 @@ class TelaLogin:
 
         self.cpf_ref = ft.Ref[str]()
         self.senha_ref = ft.Ref[str]()
-        self.snackbar = ft.SnackBar(ft.Text(""))
+        self.notificador = Notificador()
 
     def criar_view(self, page):
         msg = page.session.get("mensagem_sucesso")
         if msg:
-            self.snackbar = ft.SnackBar(
-                content=ft.Text(msg),
-                bgcolor=ft.Colors.GREEN_600,
-                show_close_icon=True,
-                duration=3000
-            )
-            page.snack_bar = self.snackbar
-            self.snackbar.open = True
+            self.notificador.sucesso(page, msg)
             page.session.set("mensagem_sucesso", "")
-            page.update()
 
-        titulo = ft.Text("Login", size=24, weight=ft.FontWeight.BOLD)
+        titulo = ft.Text(
+            "Login", 
+            size=24, 
+            weight=ft.FontWeight.BOLD
+        )
 
         cpf_row = CampoComIcone(
             "badge",
@@ -40,7 +37,10 @@ class TelaLogin:
             ref_obj=self.senha_ref
         )
 
-        login_button = ft.ElevatedButton("Entrar", on_click=self.on_login_click)
+        login_button = ft.ElevatedButton(
+            "Entrar", 
+            on_click=self.on_login_click
+        )
 
         register_link = ft.TextButton(
             "Não tem uma conta? Cadastre-se",
@@ -56,7 +56,7 @@ class TelaLogin:
                     senha_row,
                     login_button,
                     register_link,
-                    self.snackbar
+                    self.notificador.get_snackbar()
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -66,11 +66,7 @@ class TelaLogin:
         )
 
     def mostrar_erro(self, page, mensagem):
-        self.snackbar.content.value = mensagem
-        self.snackbar.bgcolor = ft.Colors.RED_600
-        self.snackbar.open = True
-        page.snack_bar = self.snackbar
-        page.update()
+        self.notificador.erro(page, mensagem)
 
     def on_login_click(self, e):
         page = e.page
