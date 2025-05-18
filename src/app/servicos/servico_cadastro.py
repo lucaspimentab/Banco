@@ -79,7 +79,7 @@ class ServicoCadastro:
             telefone        = dados["telefone"],
             email           = dados["email"],
             cep             = cep,
-            numero_endereco = numero,
+            num_end = numero,
             senha           = dados["senha"],
             data_nascimento = dados["data_nascimento"]
         )
