@@ -63,6 +63,7 @@ class TelaPagamento:
         resultado = self.servico.efetuar_pagamento(dados)
 
         if resultado["sucesso"]:
+            self.servico.banco.salvar_dados("dados/banco.json")
             self.notificador.sucesso(e.page, resultado["mensagem"])
         else:
             self.notificador.erro(e.page, "\n".join(resultado["erros"]))
