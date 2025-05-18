@@ -39,7 +39,7 @@ class TelaPerfil:
                 ft.Text("Contas:", size=18, weight=ft.FontWeight.W_600)
             ] + [
                 ft.Text(
-                    f"- {conta.tipo.title()} | Número: {conta.numero} | Saldo: R$ {conta.saldo:.2f}",
+                    f"- {conta.tipo.title()} | Número: {conta.numero_conta} | Saldo: R$ {conta.saldo:.2f}",
                     size=15
                 ) for conta in self.cliente.contas
             ],

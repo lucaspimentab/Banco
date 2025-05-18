@@ -114,7 +114,7 @@ class Cliente:
         Retorna a conta do cliente com o número especificado, se encontrada.
         """
         for conta in self.contas:
-            if conta.numero == numero_conta:
+            if conta.numero_conta == numero_conta:
                 return conta
         return None
 
@@ -129,9 +129,9 @@ class Cliente:
         print(f"Contas do cliente {self.nome}:")
         lista_contas = []
         for conta in self.contas:
-            print(f"- Conta {conta.numero}, Tipo: {conta.tipo}, Saldo: R$ {conta.saldo:.2f}")
+            print(f"- Conta {conta.numero_conta}, Tipo: {conta.tipo}, Saldo: R$ {conta.saldo:.2f}")
             info_conta = {
-                "numero": conta.numero,
+                "numero": conta.numero_conta,
                 "tipo": conta.tipo,
                 "saldo": conta.saldo
             }

@@ -19,7 +19,7 @@ class TelaPagamento:
     def criar_view(self):
         # Gera opções de contas ativas
         opcoes_contas = [
-            ft.dropdown.Option(str(conta.numero)) for conta in self.cliente.contas if conta.ativa
+            ft.dropdown.Option(str(conta.numero_conta)) for conta in self.cliente.contas if conta.ativa
         ]
 
         return ft.Column(
