@@ -3,7 +3,7 @@
     "id": 1,
     "nome": "Mateus Gontijo",
     "cpf": "12345678912",
-    "email": true,
+    "email": "mateus@email.com",
     "data_nascimento": "2000-01-01",
     "endereco": "Rua A, 123, Bairro - Belo Horizonte/MG",
     "telefone": "33123456789",
@@ -11,13 +11,13 @@
     "senha": "Senha12345",
     "contas": [
       {
-        "numero": 1003,
+        "numero": 1000,
         "tipo": "Poupanca",
         "saldo": 1000.0,
         "transacoes": []
       },
       {
-        "numero": 1004,
+        "numero": 1001,
         "tipo": "Corrente",
         "saldo": 850.0,
         "transacoes": []
@@ -28,7 +28,7 @@
     "id": 2,
     "nome": "Mário Gontijo",
     "cpf": "12345678913",
-    "email": true,
+    "email": "mario@email.com",
     "data_nascimento": "2000-01-01",
     "endereco": "Rua A, 123, Bairro - Belo Horizonte/MG",
     "telefone": "33123456789",
@@ -36,28 +36,9 @@
     "senha": "Senha12345",
     "contas": [
       {
-        "numero": 1005,
+        "numero": 1002,
         "tipo": "Poupanca",
         "saldo": 500.0,
-        "transacoes": []
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "nome": "vitoria",
-    "cpf": "14452478951",
-    "email": true,
-    "data_nascimento": "2004-03-01",
-    "endereco": "Rua Padre João de Deus, 25, Água Branca - Contagem/MG",
-    "telefone": "3199847125",
-    "data_cadastro": "2025-05-18 22:16:10",
-    "senha": "Senha123456789",
-    "contas": [
-      {
-        "numero": 1006,
-        "tipo": "Poupanca",
-        "saldo": 0.0,
         "transacoes": []
       }
     ]
