@@ -22,14 +22,91 @@ class Cliente:
         data_atual = datetime.datetime.now()
         self.data_cadastro = data_atual.strftime("%Y-%m-%d %H:%M:%S")
 
+    def validar_nome(self, nome):
+        if not isinstance(nome, str) or len(nome.strip()) < 2:
+            return False
+        return True
+
+    def validar_cpf(self, cpf):
+        cpf_numeros = re.sub(r'[^0-9]', '', cpf)
+        if len(cpf_numeros) != 11 or cpf_numeros == cpf_numeros[0] * 11:
+            return False
+        return True
+
     def validar_email(self, email):
+        padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return bool(re.match(padrao, email))
+
+    def validar_telefone(self, telefone):
+        nums = re.sub(r'[^0-9]', '', telefone)
+        return len(nums) >= 11
+
+    def validar_endereco(self, endereco):
+        return isinstance(endereco, str) and len(endereco.strip()) >= 5
+
+    def eh_senha_valida(self, senha):
+        if len(senha) < 8:
+            return False
+        tem_letra   = any(c.isalpha() for c in senha)
+        tem_numero  = any(c.isdigit() for c in senha)
+        simbolos    = "!@#$%^&*(),.?/:{}|<>"
+        tem_simbolo = any(c in simbolos for c in senha)
+        return tem_letra and tem_numero and tem_simbolo
+
+    def alterar_senha(self, senha_atual, senha_nova):
+        if not self.verificar_senha(senha_atual):
+            return {"sucesso": False, "mensagem": "Senha atual incorreta"}
+        if not self.eh_senha_valida(senha_nova):
+            return {"sucesso": False,
+                    "mensagem": "Nova senha deve ter pelo menos 8 caracteres, incluindo letra, número e símbolo"}
+        self.senha = senha_nova
+        return {"sucesso": True, "mensagem": "Senha alterada com sucesso"}
+
+
+    def para_dicionario(self):
+        return {
+            "id":             self.id,
+            "nome":           self.nome,
+            "cpf":            self.cpf,
+            "data_nascimento":self.data_nascimento,
+            "email":          self.email,
+            "endereco":       self.endereco,
+            "telefone":       self.telefone,
+            "senha":          self.senha,
+            "data_cadastro":  self.data_cadastro,
+            "contas":         [conta.numero for conta in self.contas]
+        }
+
+    def de_dicionario(dados):
         """
-        Valida o formato do e-mail. Retorna o e-mail se válido, ou None se inválido.
+        Cria e retorna um Cliente a partir de um dict.
+        Uso: cli = Cliente.de_dicionario(meu_dict)
         """
-        if not self.verificar_email(email):
-            print(f"Erro: E-mail {email} inválido")
-            return None
-        return email
+        cliente = Cliente.__new__(Cliente)  # pula __init__
+        cliente.id              = dados["id"]
+        cliente.nome            = dados["nome"]
+        cliente.cpf             = dados["cpf"]
+        cliente.data_nascimento = dados["data_nascimento"]
+        cliente.email           = dados["email"]
+        cliente.endereco        = dados["endereco"]
+        cliente.telefone        = dados["telefone"]
+        cliente.senha           = dados["senha"]
+        cliente.data_cadastro   = dados["data_cadastro"]
+        cliente.contas          = []       # contas serão associadas depois
+        return cliente
+
+    def carregar_contador(self, valor):
+        """
+        Carrega o contador de IDs a partir de um valor salvo.
+        """
+        if valor is not None:
+            Cliente.contador_id = valor
+
+    def obter_contador(self):
+        """
+        Retorna o valor atual do contador de IDs.
+        """
+        return Cliente.contador_id
 
     def criar_senha(self, senha_criada):
         """
