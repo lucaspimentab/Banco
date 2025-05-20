@@ -1,7 +1,7 @@
 import flet as ft
-from interface.telas.cliente.perfil import TelaPerfil
-from interface.telas.cliente.pagamento import TelaPagamento
-from interface.telas.cliente.extrato import TelaExtrato
+from interface.telas.cliente.tela_perfil import TelaPerfil
+from interface.telas.cliente.tela_pagamento import TelaPagamento
+from interface.telas.cliente.tela_extrato import TelaExtrato
 
 class TelaCliente:
     def __init__(self, banco, cliente, on_logout):

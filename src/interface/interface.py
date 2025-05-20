@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from config.caminhos import CAMINHO_DADOS_JSON
 from interface.telas.cadastro import TelaCadastro
 from interface.telas.login import TelaLogin
-from interface.telas.cliente.cliente import TelaCliente
+from interface.telas.cliente.tela_cliente import TelaCliente
 from app.banco import Banco
 from app.servicos.servico_cadastro import ServicoCadastro
 
