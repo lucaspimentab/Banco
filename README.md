@@ -1,1 +1,7 @@
-# Banco
+Este projeto consiste no desenvolvimento de um sistema bancário completo, implementado em Python, como parte dos requisitos necessários para a obtenção de pontuação na disciplina Análise, Porjeto e Programação Orientados a Objetos. O sistema simula as principais operações bancárias, incluindo cadastro de clientes (Pessoa Física e Pessoa Jurídica), criação de contas (Conta Corrente e Conta Poupança), transferências, pagamentos, consultas de saldo e emissão de extrato. Toda a validação de dados sensíveis, como CPF, CNPJ, e-mail, telefone e endereço, é realizada por classes específicas de validadores, garantindo a integridade e consistência dos dados inseridos. 
+
+A arquitetura do projeto está organizada em camadas bem definidas: a camada Model contém as classes de domínio responsáveis pela representação das entidades do sistema, a camada DAO (Data Access Object) realiza o acesso e a persistência dos dados em arquivos JSON, a camada Mapper é responsável pela serialização e desserialização dos objetos, facilitando a conversão entre objetos Python e os dados persistidos, a camada Controller implementa a lógica de negócio e orquestra as operações entre as camadas, a camada Utils concentra as funções auxiliares e validadores de dados, por último a camada Interface implementa a interface gráfica utilizando o framework Flet, possibilitando uma interação amigável com o usuário final.
+
+Para execução do sistema, é necessário clonar o repositório, instalar as dependências (sendo o framework Flet o principal requisito adicional) e rodar o arquivo principal do sistema.
+
+O diagrama UML pode ser acessado através do seguinte link: https://lucid.app/lucidchart/365f1fb1-cef3-475c-8bf7-16fc362b1218/edit?invitationId=inv_402e6509-3471-4268-836a-746181e79fa8

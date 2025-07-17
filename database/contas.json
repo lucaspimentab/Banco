@@ -1,0 +1,85 @@
+[
+    {
+        "numero": "1001",
+        "saldo": 9999902.0,
+        "historico": [
+            "[2025-06-24 17:54:39] Transfer\u00eancia de R$ 88.00 para conta 1002",
+            "[2025-06-24 17:54:49] Conta encerrada"
+        ],
+        "ativa": false,
+        "tipo": "corrente"
+    },
+    {
+        "numero": "1002",
+        "saldo": 88.0,
+        "historico": [
+            "[2025-06-24 17:54:39] Recebido R$ 88.00 da conta 1001"
+        ],
+        "ativa": true,
+        "tipo": "poupanca"
+    },
+    {
+        "numero": "1003",
+        "saldo": 890.01,
+        "historico": [
+            "[2025-06-24 18:18:41] Transfer\u00eancia de R$ 99.99 para conta 1004"
+        ],
+        "ativa": true,
+        "tipo": "poupanca"
+    },
+    {
+        "numero": "1004",
+        "saldo": 2660.74,
+        "historico": [
+            "[2025-06-24 18:10:00] Dep\u00f3sito inicial de R$ 2560.75",
+            "[2025-06-24 18:18:41] Recebido R$ 99.99 da conta 1003"
+        ],
+        "ativa": true,
+        "tipo": "corrente"
+    },
+    {
+        "numero": "1005",
+        "saldo": 132.5,
+        "historico": [
+            "[2025-06-24 18:11:00] Dep\u00f3sito inicial de R$ 132.50"
+        ],
+        "ativa": true,
+        "tipo": "poupanca"
+    },
+    {
+        "numero": "1006",
+        "saldo": 5780.0,
+        "historico": [
+            "[2025-06-24 18:12:00] Dep\u00f3sito inicial de R$ 5780.00"
+        ],
+        "ativa": true,
+        "tipo": "corrente"
+    },
+    {
+        "numero": "1007",
+        "saldo": 875.0,
+        "historico": [
+            "[2025-06-24 18:13:00] Dep\u00f3sito inicial de R$ 875.00"
+        ],
+        "ativa": true,
+        "tipo": "poupanca"
+    },
+    {
+        "numero": "1008",
+        "saldo": 1420.35,
+        "historico": [
+            "[2025-06-24 18:14:00] Dep\u00f3sito inicial de R$ 1420.35"
+        ],
+        "ativa": true,
+        "tipo": "corrente"
+    },
+    {
+        "numero": "1009",
+        "saldo": 200.0,
+        "historico": [
+            "[2025-06-24 18:15:00] Dep\u00f3sito inicial de R$ 200.00"
+        ],
+        "ativa": true,
+        "tipo": "poupanca"
+    }
+]

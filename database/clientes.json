@@ -1,0 +1,47 @@
+[
+    {
+        "numero_documento": "157.112.896-40",
+        "senha": "123",
+        "contas": [
+            "1001",
+            "1002"
+        ]
+    },
+    {
+        "numero_documento": "87.654.332/1454-65",
+        "senha": "123",
+        "contas": [
+            "1003"
+        ]
+    },
+    {
+        "numero_documento": "123.345.432-15",
+        "senha": "abcd123",
+        "contas": [
+            "1004",
+            "1005"
+        ]
+    },
+    {
+        "numero_documento": "34.532.165/4354-23",
+        "senha": "adidas",
+        "contas": [
+            "1006"
+        ]
+    },
+    {
+        "numero_documento": "157.239.913-48",
+        "senha": "marcelly123",
+        "contas": [
+            "1007",
+            "1008"
+        ]
+    },
+    {
+        "numero_documento": "91.284.824/8219-42",
+        "senha": "ufmg123",
+        "contas": [
+            "1009"
+        ]
+    }
+]

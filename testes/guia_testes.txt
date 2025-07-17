@@ -1,0 +1,7 @@
+Para facilitar o uso e visualização dos testes, baixe o pytest, via terminal mesmo, e ajuste o PYTHONPATH para o pytest
+O pytest precisa saber que a pasta onde estão as classes é a raiz dos imports.
+
+Na pasta raiz,  digite no terminal/PowerShell o seguinte comando:
+
+$env:PYTHONPATH = (Get-Location)
+pytest
