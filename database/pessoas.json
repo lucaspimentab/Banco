@@ -1,0 +1,68 @@
+[
+    {
+        "nome": "Lucas Pimenta Braga",
+        "email": "lucaspimentabraga@gmail.com",
+        "numero_documento": "157.112.896-40",
+        "cep": "32315-120",
+        "numero_endereco": "375",
+        "endereco": "Rua Ingas, 375 - Eldorado, Contagem - MG, 32315120",
+        "telefone": "(31) 99628-1600",
+        "tipo": "fisica",
+        "data_nascimento": "25/05/2004"
+    },
+    {
+        "nome": "Nike Air",
+        "email": "nikeair@gmail.com",
+        "numero_documento": "87.654.332/1454-65",
+        "cep": "32315-120",
+        "numero_endereco": "295",
+        "endereco": "Rua Ingas, 295 - Eldorado, Contagem - MG, 32315120",
+        "telefone": "(31) 99637-4824",
+        "tipo": "juridica",
+        "nome_fantasia": "Nike"
+    },
+    {
+        "nome": "Isabella Vieira",
+        "email": "isabellavieira123@gmail.com",
+        "numero_documento": "123.345.432-15",
+        "cep": "30130-130",
+        "numero_endereco": "1120",
+        "endereco": "Rua Rio Grande do Norte, 1120 - Santa Efig\u00eania, Belo Horizonte - MG, 30130130",
+        "telefone": "(22) 99239-2391",
+        "tipo": "fisica",
+        "data_nascimento": "12/12/2001"
+    },
+    {
+        "nome": "Adidas Sport",
+        "email": "adidasoficial@gmail.com",
+        "numero_documento": "34.532.165/4354-23",
+        "cep": "30285-010",
+        "numero_endereco": "345",
+        "endereco": "Rua Bel\u00e9m, 345 - Pomp\u00e9ia, Belo Horizonte - MG, 30285010",
+        "telefone": "(22) 93294-3992",
+        "tipo": "juridica",
+        "nome_fantasia": "Adidas"
+    },
+    {
+        "nome": "Marcelly Pimenta Braga",
+        "email": "mpb@gmail.com",
+        "numero_documento": "157.239.913-48",
+        "cep": "30870-240",
+        "numero_endereco": "210",
+        "endereco": "Rua Eug\u00eania Nery, 210 - Gl\u00f3ria, Belo Horizonte - MG, 30870240",
+        "telefone": "(31) 99545-7933",
+        "tipo": "fisica",
+        "data_nascimento": "01/01/1999"
+    },
+    {
+        "nome": "UFMG",
+        "email": "ufmg@gmail.com",
+        "numero_documento": "91.284.824/8219-42",
+        "cep": "31255-000",
+        "numero_endereco": "6627",
+        "endereco": "Avenida Marechal Esperidi\u00e3o Rosas, 6627 - S\u00e3o Francisco, Belo Horizonte - MG, 31255000",
+        "telefone": "(31) 99583-8438",
+        "tipo": "juridica",
+        "nome_fantasia": "Universidade Federal de Minas Gerais"
+    }
+]
